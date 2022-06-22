@@ -11,6 +11,7 @@ from tkinter import ttk
 import pandas as pd
 import threading
 import time
+import tkinter as tk
 
 
 class Window(Frame):
@@ -26,6 +27,15 @@ class Window(Frame):
         self.master.title("Client GUI")
         self.master.geometry("500x500")
         self.master.resizable(False, False)
+
+
+
+
+     #functies in init_window
+        
+          #Log out as client
+        def log_out_client():
+            messagebox.askyesno("Log out", "Log out as client?")
 
 
 
@@ -45,6 +55,82 @@ class Window(Frame):
         my_tabs.add(tab1, text='Tab1')
         my_tabs.add(tab2, text='Tab2')
         my_tabs.add(tab3, text='Tab3')
+
+
+        # Label frames
+        wrapper1 = LabelFrame(tab1, text="Clients List")
+        wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        wrapper2 = LabelFrame(tab1, text="Get data by brand")
+        wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        wrapper3 = LabelFrame(tab1, text="Get amount of brands by calories per serving")
+        wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        wrapper4 = LabelFrame(tab1, text="Get amount of brands by rating")
+        wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        wrapper5 = LabelFrame(tab1, text="Get amount of brands by sodium")
+        wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        wrapper6 = LabelFrame(tab2, text="Read admin message")
+        wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        #log out client button
+        btn = Button(wrapper1, text="Log out", command=log_out_client)
+        btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        # #get calories by chart button
+        # btn = Button(wrapper2, text="Calories by brand", command=get_calories_data_thread)
+        # btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        # btn = Button(wrapper2, text="Rating by brand", command=get_rating_data_thread)
+        # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+        # btn = Button(wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
+        # btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+
+
+    #WRAPPER3
+    # input_calories = Label(wrapper3, text='input minvalue calories')
+    # input_calories.pack(side=tk.LEFT, padx=10)
+    # entry_client = Entry(wrapper3)
+    # entry_client.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper3, text="Get data", command=get_calories_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+    # #WRAPPER4
+    # input_rating = Label(wrapper4, text='input minvalue rating')
+    # input_rating.pack(side=tk.LEFT, padx=10)
+    # entry_client2 = Entry(wrapper4)
+    # entry_client2.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper4, text="Get data", command=get_ratings_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+    # #WRAPPER5
+    # input_rating = Label(wrapper5, text='input minvalue sodium')
+    # input_rating.pack(side=tk.LEFT, padx=10)
+    # entry_client3 = Entry(wrapper5)
+    # entry_client3.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper5, text="Get data", command=get_sodium_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+    # #WRAPPER6
+    # btn = Button(wrapper6, text="Read admin message", command=read_admin_message_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+
+
+
+
+    # win.destroy()
+    # new_window.mainloop()
         #self.pack(fill=BOTH, expand=1)
      
 
