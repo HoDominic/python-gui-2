@@ -7,6 +7,11 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Combobox
 
+from tkinter import ttk
+import pandas as pd
+import threading
+import time
+
 
 class Window(Frame):
     def __init__(self, master=None):
@@ -18,38 +23,60 @@ class Window(Frame):
 
     # Creation of init_window
     def init_window(self):
-        self.master.title("Stopafstand")
-        self.pack(fill=BOTH, expand=1)
+        self.master.title("Client GUI")
+        self.master.geometry("500x500")
+        self.master.resizable(False, False)
 
-        Label(self, text="Snelheid (km/u):").grid(row=0)
-        Label(self, text="Reactietijd (sec):", pady=10).grid(row=1)
-        Label(self, text="Type wegdek:", pady=10).grid(row=2)
 
-        self.entry_snelheid = Entry(self, width=40)
-        self.entry_reactietijd = Entry(self, width=40)
-        self.entry_wegdek = Entry(self, width=40)
-        self.entry_snelheid.grid(row=0, column=1, sticky=E + W, pady=(5, 5))
-        self.entry_reactietijd.grid(row=1, column=1, sticky=E + W)
 
-        self.label_resultaat = Label(self, width=40, anchor='w')
+        #Tabs
+         #TABS
+        my_tabs = ttk.Notebook(self.master)
+        my_tabs.pack(pady=15)
 
-        choices = ('Droog wegdek', 'Nat wegdek')
-        # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
-        self.cbo_wegdek = Combobox(self, state="readonly", width=40)
-        self.cbo_wegdek['values'] = choices
-        self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
+        tab1 = Frame(my_tabs,width=500,height=500)
+        tab1.pack(fill='both', expand=1)
+        tab2 = Frame(my_tabs,width=500,height=500 )
+        tab2.pack(fill='both', expand=1)
 
-        #Label(self, text="km/u").grid(row=0, column=2)
-        Label(self, text="m/s").grid(row=0, column=2)
-        Label(self, text="sec", pady=10).grid(row=1, column=2)
+        tab3 = Frame(my_tabs,width=500,height=500 )
+        tab3.pack(fill='both', expand=1)
 
-        self.buttonCalculate = Button(
-            self, text="Bereken stopafstand", command=self.calculateStopafstand)
-        self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
-            0, 5), padx=(5, 5), sticky=N + S + E + W)
+        my_tabs.add(tab1, text='Tab1')
+        my_tabs.add(tab2, text='Tab2')
+        my_tabs.add(tab3, text='Tab3')
+        #self.pack(fill=BOTH, expand=1)
+     
 
-        Grid.rowconfigure(self, 2, weight=1)
-        Grid.columnconfigure(self, 1, weight=1)
+        # Label(self, text="Snelheid (km/u):").grid(row=0)
+        # Label(self, text="Reactietijd (sec):", pady=10).grid(row=1)
+        # Label(self, text="Type wegdek:", pady=10).grid(row=2)
+
+        # self.entry_snelheid = Entry(self, width=40)
+        # self.entry_reactietijd = Entry(self, width=40)
+        # self.entry_wegdek = Entry(self, width=40)
+        # self.entry_snelheid.grid(row=0, column=1, sticky=E + W, pady=(5, 5))
+        # self.entry_reactietijd.grid(row=1, column=1, sticky=E + W)
+
+        # self.label_resultaat = Label(self, width=40, anchor='w')
+
+        # choices = ('Droog wegdek', 'Nat wegdek')
+        # # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
+        # self.cbo_wegdek = Combobox(self, state="readonly", width=40)
+        # self.cbo_wegdek['values'] = choices
+        # self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
+
+        # #Label(self, text="km/u").grid(row=0, column=2)
+        # Label(self, text="m/s").grid(row=0, column=2)
+        # Label(self, text="sec", pady=10).grid(row=1, column=2)
+
+        # self.buttonCalculate = Button(
+        #     self, text="Bereken stopafstand", command=self.calculateStopafstand)
+        # self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
+        #     0, 5), padx=(5, 5), sticky=N + S + E + W)
+
+        # Grid.rowconfigure(self, 2, weight=1)
+        # Grid.columnconfigure(self, 1, weight=1)
 
         # root.protocol("WM_DELETE_WINDOW", _delete_window)
 
