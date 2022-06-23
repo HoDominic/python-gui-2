@@ -65,9 +65,9 @@ class Window(Frame):
 
         choices = ('Droog wegdek', 'Nat wegdek')
         # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
-        self.cbo_wegdek = Combobox(self, state="readonly", width=40)
-        self.cbo_wegdek['values'] = choices
-        self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
+        # self.cbo_wegdek = Combobox(self, state="readonly", width=40)
+        # self.cbo_wegdek['values'] = choices
+        # self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
 
         #Label(self, text="km/u").grid(row=0, column=2)
         # Label(self, text="m/s").grid(row=0, column=2)
@@ -125,7 +125,7 @@ class Window(Frame):
 
 
 
-#         self.master.title("Client login form")
+        self.master.title("Client login form")
 #         self.master.geometry("500x250")
 #         self.master.resizable(False, False)
 #         self.master.mainloop()
@@ -296,17 +296,17 @@ class Window(Frame):
 
     def calculateStopafstand(self):
         try:
-            snelheid = int(self.entry_snelheid.get())/3.6
-            reactietijd = int(self.entry_reactietijd.get())
+            snelheid = str(self.entry_snelheid.get())
+            reactietijd = str(self.entry_reactietijd.get())
 
-            wegdek = (self.cbo_wegdek.get())
+            # wegdek = (self.cbo_wegdek.get())
 
-            if wegdek == "Droog wegdek":
-                wegdek = 5
-            else:
-                wegdek = 8
+            # if wegdek == "Droog wegdek":
+            #     wegdek = 5
+            # else:
+            #     wegdek = 8
 
-            print(type(wegdek))
+            # print(type(wegdek))
 
             self.my_writer_obj.write(f"{snelheid}\n")
             logging.info(f"Sending snelheid: {snelheid}")
@@ -314,15 +314,15 @@ class Window(Frame):
             self.my_writer_obj.write("%s\n" % reactietijd)
             logging.info(f"Sending reactietijd: {reactietijd}")
 
-            self.my_writer_obj.write("%s\n" % wegdek)
-            logging.info(f"Sending wegdek: {wegdek}")
+            # self.my_writer_obj.write("%s\n" % wegdek)
+            # logging.info(f"Sending wegdek: {wegdek}")
 
             self.my_writer_obj.flush()
 
             # waiting for answer
             answer = self.my_writer_obj.readline().rstrip('\n')
             logging.info(f"Answer server: {answer}")
-            stopafstand = int(answer)
+            stopafstand = str(answer)
 
             self.label_resultaat['text'] = f"{stopafstand}"
 

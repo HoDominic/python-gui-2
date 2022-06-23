@@ -33,7 +33,7 @@ class ClientHandler(threading.Thread):
             #wegdek = io_stream_client.readline().rstrip('\n')
             #logging.debug(f"CLH - wegdek: {wegdek}")
 
-            berekening = int(snelheid) + int(reactietijd)
+            berekening = str(snelheid) + str(reactietijd)
             # (int(snelheid) * int(reactietijd)) + \
             #   int(snelheid*snelheid) / int(float(wegdek * 2))
             io_stream_client.write(f"{berekening}\n")
