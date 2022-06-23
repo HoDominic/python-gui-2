@@ -57,13 +57,13 @@ class Window(Frame):
 
         self.entry_client_name = Entry(self, width=40)
         self.entry_client_nickname = Entry(self, width=40)
-       # self.entry_wegdek = Entry(self, width=40)
-        self.entry_client_name.grid(row=0, column=1, sticky=E + W ,padx=(0, 10), pady=(10, 10))
-        self.entry_client_nickname.grid(row=1, column=1, sticky=E + W)
+     
+        self.entry_client_name.grid(row=0, column=1,padx=(0, 10), pady=(10, 10))
+        self.entry_client_nickname.grid(row=1, column=1,padx=(0, 10), pady=(10, 10))
 
         self.label_resultaat = Label(self, width=40, anchor='w')
 
-        choices = ('Droog wegdek', 'Nat wegdek')
+       
         # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
         # self.cbo_wegdek = Combobox(self, state="readonly", width=40)
         # self.cbo_wegdek['values'] = choices
@@ -74,7 +74,7 @@ class Window(Frame):
         # Label(self, text="sec", pady=10).grid(row=1, column=2)
 
         self.buttonCalculate = Button(
-            self, text="Bereken stopafstand", command=self.calculateStopafstand)
+            self, text="Login", command=self.login_client)
         self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
             0, 5), padx=(5, 5), sticky=N + S + E + W)
 
@@ -294,11 +294,22 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding connection with database: {ex}")
 
-    def calculateStopafstand(self):
+    def login_client(self):
         try:
             #Get client login input
-            client_name  = str(self.entry_client_name.get())
-            client_nickname = str(self.entry_client_nickname.get())
+
+            #client name
+            client_name  = (self.entry_client_name.get())
+            if client_name == "":
+                messagebox.showerror("Name Invalid", "Name input can't be empty")   #client name error handling
+                messagebox.ERROR("Empty name input error")
+
+            #client name
+            client_nickname = (self.entry_client_nickname.get())
+            if client_nickname == "":
+                messagebox.showerror("Nickname Invalid",
+                             "Nickname input can't be empty")
+                messagebox.ERROR("Empty nickname input error")
 
 
             #Send client login input
@@ -307,6 +318,9 @@ class Window(Frame):
             self.my_writer_obj.write(f"{ client_name }\n")
             logging.info(f"Client name: { client_name }")
 
+             
+           
+
             self.my_writer_obj.write(f"{ client_nickname}\n")
             logging.info(f"Client nickname: {client_nickname}")
 
@@ -314,7 +328,7 @@ class Window(Frame):
 
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
-            messagebox.showinfo("Stopafstand berekenen",
+            messagebox.showinfo("Login error",
                                 "Something has gone wrong...")
 
     def close_connection(self):
@@ -325,8 +339,8 @@ class Window(Frame):
             self.socket_to_server.close()
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
-            messagebox.showinfo("Stopafstand berekenen",
-                                "Something has gone wrong...")
+            # messagebox.showinfo("Stopafstand berekenen",
+            #                     "Something has gone wrong...")
 
 
 logging.basicConfig(level=logging.INFO)
