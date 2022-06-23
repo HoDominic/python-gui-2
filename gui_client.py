@@ -27,26 +27,9 @@ class Window(Frame):
 
     # Creation of init_window
     def init_window(self):
-        
-
-#         def add_client():
-#             pass
-
-
-
-      
-
 
         self.pack(fill=BOTH, expand=1)
 
-        var1 = StringVar()
-        client_name = StringVar()
-
-        var2 = StringVar()
-        client_nickname = StringVar()
-
-        var3 = StringVar()
-        client_email = StringVar()
      
 
         Label(self, text="Client Name:", padx=10, pady=10).grid(row=0)
@@ -65,18 +48,6 @@ class Window(Frame):
         self.entry_client_nickname.grid(row=1, column=1,padx=(0, 10), pady=(10, 10))
         self.entry_client_email.grid(row=2, column=1,padx=(0, 10), pady=(10, 10))
 
-        self.label_resultaat = Label(self, width=40, anchor='w')
-
-       
-        # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
-        # self.cbo_wegdek = Combobox(self, state="readonly", width=40)
-        # self.cbo_wegdek['values'] = choices
-        # self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
-
-        #Label(self, text="km/u").grid(row=0, column=2)
-        # Label(self, text="m/s").grid(row=0, column=2)
-        # Label(self, text="sec", pady=10).grid(row=1, column=2)
-
         self.button_login = Button(
             self, text="Login", command=self.login_client)
         self.button_login.grid(row=3, column=0, columnspan=3, pady=(
@@ -84,13 +55,11 @@ class Window(Frame):
 
         # root.protocol("WM_DELETE_WINDOW", _delete_window)
 
-
+        #Initial window layout
         self.master.title("Client login form")
         self.master.geometry("350x150")
         self.master.resizable(False, False)
 #         self.master.mainloop()
-     
-        #Initial login window
      
 
   # client to server message
@@ -235,7 +204,17 @@ class Window(Frame):
 
     def login_client(self):
         try:
+
+
+            mydb = mysql.connector.connect(
+            host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
+            cursor = mydb.cursor()
+
+
             #Get client login input
+
+              # Id voor DB
+            client_id = cursor.lastrowid
 
             #client name
             client_name  = (self.entry_client_name.get())
@@ -255,6 +234,17 @@ class Window(Frame):
             if client_email == "":
                 messagebox.showerror("Email Invalid", "Email input can't be empty")
                 messagebox.ERROR("Empty email input error")
+
+
+               # Id has to be sent!
+            sql = "INSERT INTO clients VALUES(%s,%s,%s,%s)"
+            cursor.execute(sql, (client_id, client_name,
+                                client_nickname, client_email))
+
+            #must be commited after executing query
+            mydb.commit()
+            print("Logged in as client!")
+            messagebox.showinfo('Login', "Logged in!")
 
 
             #Send client login input
