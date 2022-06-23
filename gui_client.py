@@ -13,6 +13,7 @@ import pandas as pd
 import threading
 import time
 import tkinter as tk
+import mysql.connector
 
 
 class Window(Frame):
@@ -22,6 +23,7 @@ class Window(Frame):
         # Functies oproepen!
         self.init_window()
         self.makeConnnectionWithServer()
+        self.makeConnectionWithMysqlDatabase()
 
     # Creation of init_window
     def init_window(self):
@@ -31,7 +33,20 @@ class Window(Frame):
 #             pass
 
 
+
+      
+
+
         self.pack(fill=BOTH, expand=1)
+
+        var1 = StringVar()
+        client_name = StringVar()
+
+        var2 = StringVar()
+        client_nickname = StringVar()
+
+        var3 = StringVar()
+        client_email = StringVar()
      
 
         Label(self, text="Snelheid (km/u):", padx=10, pady=10).grid(row=0)
@@ -71,14 +86,7 @@ class Window(Frame):
        
 
 
-#         var1 = StringVar()
-#         client_name = StringVar()
 
-#         var2 = StringVar()
-#         client_nickname = StringVar()
-
-#         var3 = StringVar()
-#         client_email = StringVar()
 
 
 # # name text
@@ -274,6 +282,17 @@ class Window(Frame):
             logging.info("Open connection with server succesfully")
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
+
+    def makeConnectionWithMysqlDatabase(self):
+        try:
+            logging.info("Making connection with MYSQL database...")
+            mydb = mysql.connector.connect(
+            host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
+
+            cursor = mydb.cursor()
+            logging.info("Connected with MYSQL database")
+        except Exception as ex:
+            logging.error(f"Foutmelding connection with database: {ex}")
 
     def calculateStopafstand(self):
         try:
