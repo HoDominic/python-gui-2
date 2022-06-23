@@ -11,7 +11,17 @@ class ClientHandler(threading.Thread):
         self.socket_to_client = socketclient
 
     def run(self):
+       # io_stream_client = self.socket_to_client.makefile(mode='rw')
+
+
+
+        #CATCH LOGIN client_to_server messge after login from client-side 
+   
         io_stream_client = self.socket_to_client.makefile(mode='rw')
+        io_stream_client.write("Thank you for connecting!\n")       #newline karakter niet vergeten!
+        io_stream_client.flush()
+
+
         logging.info("CLH - started & waiting...")
         commando = io_stream_client.readline().rstrip('\n')
         while commando != "CLOSE":

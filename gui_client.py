@@ -2,6 +2,7 @@
 import logging
 from random import choices
 import socket
+from struct import pack
 from tkinter import *
 
 from tkinter import messagebox
@@ -24,61 +25,184 @@ class Window(Frame):
 
     # Creation of init_window
     def init_window(self):
-        self.master.title("Client GUI")
-        self.master.geometry("500x500")
-        self.master.resizable(False, False)
+        
+
+#         def add_client():
+#             pass
+
+
+        self.pack(fill=BOTH, expand=1)
+     
+
+        Label(self, text="Snelheid (km/u):", padx=10, pady=10).grid(row=0)
+        Label(self).grid(column=1)
+       
+        Label(self, text="Reactietijd (sec):", pady=10).grid(row=1)
+        Label(self, text="Type wegdek:", pady=10).grid(row=2)
+
+        self.entry_snelheid = Entry(self, width=20)
+        self.entry_reactietijd = Entry(self, width=40)
+        self.entry_wegdek = Entry(self, width=40)
+        self.entry_snelheid.grid(row=0, column=1, sticky=E + W ,padx=(0, 10), pady=(10, 10))
+        self.entry_reactietijd.grid(row=1, column=1, sticky=E + W)
+
+        self.label_resultaat = Label(self, width=40, anchor='w')
+
+        choices = ('Droog wegdek', 'Nat wegdek')
+        # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
+        self.cbo_wegdek = Combobox(self, state="readonly", width=40)
+        self.cbo_wegdek['values'] = choices
+        self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
+
+        #Label(self, text="km/u").grid(row=0, column=2)
+        # Label(self, text="m/s").grid(row=0, column=2)
+        # Label(self, text="sec", pady=10).grid(row=1, column=2)
+
+        self.buttonCalculate = Button(
+            self, text="Bereken stopafstand", command=self.calculateStopafstand)
+        self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
+            0, 5), padx=(5, 5), sticky=N + S + E + W)
+
+        #Grid.rowconfigure(self, 2, weight=1)
+        #Grid.columnconfigure(self, 1, weight=1)
+
+        # root.protocol("WM_DELETE_WINDOW", _delete_window)
+
+       
+
+
+#         var1 = StringVar()
+#         client_name = StringVar()
+
+#         var2 = StringVar()
+#         client_nickname = StringVar()
+
+#         var3 = StringVar()
+#         client_email = StringVar()
+
+
+# # name text
+#         label1 = Label( self,textvariable=var1)
+#         var1.set("Client Name:")
+#         label1.grid(row=0, column=1)
+
+# # name input field
+#         entry = Entry( textvariable=client_name)
+# #client_name.set("Enter Name ")
+#         entry.grid(row=0, column=2)
+
+# # nickname text
+#         label2 = Label( textvariable=var2)
+#         var2.set("Client Nickname:")
+#         label2.grid(row=1, column=1)
+
+# # nickname input field
+#         entry2 = Entry( textvariable=client_nickname)
+#         entry2.grid(row=1, column=2)
+
+
+# # email text
+#         label3 = Label( textvariable=var3)
+#         var3.set("Client Email:")
+#         label3.grid(row=2, column=1)
+
+# # email input field
+#         entry3 = Entry(textvariable=client_email)
+#         entry3.grid(row=2, column=2, padx=20)
+
+
+# # butto
+#         btn = Button( text="Log in as client", command=add_client)
+#         btn.grid(row=4, column=2)
 
 
 
+#         self.master.title("Client login form")
+#         self.master.geometry("500x250")
+#         self.master.resizable(False, False)
+#         self.master.mainloop()
+     
+        #Initial login window
+     
+
+        #functions in init_window
+        def login_client_to_server():
+            pass
+    # # Get gebruiken anders kan het de waarde niet lezen
+    #         client_name = entry.get()
+    #         client_nickname = entry2.get()
+    #         client_email = entry3.get()
+
+
+      
+
+        
+        
+        
+
+        
+
+
+
+ 
+
+    # client to server message
+            # io_stream_server = socket_to_server.makefile(mode='rw')
+            # io_stream_server.write(f"{client_name}\n")
+            # io_stream_server.flush()
+            # io_stream_server.write(f"{client_nickname}\n")
+            # io_stream_server.flush()
+            # io_stream_server.write(f"{client_email}\n")
+            # io_stream_server.flush()
 
      #functies in init_window
         
           #Log out as client
-        def log_out_client():
-            messagebox.askyesno("Log out", "Log out as client?")
+        # def log_out_client():
+        #     messagebox.askyesno("Log out", "Log out as client?")
 
 
 
-        #Tabs
-         #TABS
-        my_tabs = ttk.Notebook(self.master)
-        my_tabs.pack(pady=15)
+        # #Tabs
+        #  #TABS
+        # my_tabs = ttk.Notebook(self.master)
+        # my_tabs.pack(pady=15)
 
-        tab1 = Frame(my_tabs,width=500,height=500)
-        tab1.pack(fill='both', expand=1)
-        tab2 = Frame(my_tabs,width=500,height=500 )
-        tab2.pack(fill='both', expand=1)
+        # tab1 = Frame(my_tabs,width=500,height=500)
+        # tab1.pack(fill='both', expand=1)
+        # tab2 = Frame(my_tabs,width=500,height=500 )
+        # tab2.pack(fill='both', expand=1)
 
-        tab3 = Frame(my_tabs,width=500,height=500 )
-        tab3.pack(fill='both', expand=1)
+        # tab3 = Frame(my_tabs,width=500,height=500 )
+        # tab3.pack(fill='both', expand=1)
 
-        my_tabs.add(tab1, text='Tab1')
-        my_tabs.add(tab2, text='Tab2')
-        my_tabs.add(tab3, text='Tab3')
+        # my_tabs.add(tab1, text='Tab1')
+        # my_tabs.add(tab2, text='Tab2')
+        # my_tabs.add(tab3, text='Tab3')
 
 
-        # Label frames
-        wrapper1 = LabelFrame(tab1, text="Clients List")
-        wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+        # # Label frames
+        # wrapper1 = LabelFrame(tab1, text="Clients List")
+        # wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        wrapper2 = LabelFrame(tab1, text="Get data by brand")
-        wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
+        # wrapper2 = LabelFrame(tab1, text="Get data by brand")
+        # wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        wrapper3 = LabelFrame(tab1, text="Get amount of brands by calories per serving")
-        wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
+        # wrapper3 = LabelFrame(tab1, text="Get amount of brands by calories per serving")
+        # wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        wrapper4 = LabelFrame(tab1, text="Get amount of brands by rating")
-        wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
+        # wrapper4 = LabelFrame(tab1, text="Get amount of brands by rating")
+        # wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        wrapper5 = LabelFrame(tab1, text="Get amount of brands by sodium")
-        wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
+        # wrapper5 = LabelFrame(tab1, text="Get amount of brands by sodium")
+        # wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        wrapper6 = LabelFrame(tab2, text="Read admin message")
-        wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+        # wrapper6 = LabelFrame(tab2, text="Read admin message")
+        # wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        #log out client button
-        btn = Button(wrapper1, text="Log out", command=log_out_client)
-        btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+        # #log out client button
+        # btn = Button(wrapper1, text="Log out", command=log_out_client)
+        # btn.pack(side=tk.LEFT,padx=10 ,pady=0)
 
         # #get calories by chart button
         # btn = Button(wrapper2, text="Calories by brand", command=get_calories_data_thread)
@@ -131,40 +255,7 @@ class Window(Frame):
 
     # win.destroy()
     # new_window.mainloop()
-        #self.pack(fill=BOTH, expand=1)
      
-
-        # Label(self, text="Snelheid (km/u):").grid(row=0)
-        # Label(self, text="Reactietijd (sec):", pady=10).grid(row=1)
-        # Label(self, text="Type wegdek:", pady=10).grid(row=2)
-
-        # self.entry_snelheid = Entry(self, width=40)
-        # self.entry_reactietijd = Entry(self, width=40)
-        # self.entry_wegdek = Entry(self, width=40)
-        # self.entry_snelheid.grid(row=0, column=1, sticky=E + W, pady=(5, 5))
-        # self.entry_reactietijd.grid(row=1, column=1, sticky=E + W)
-
-        # self.label_resultaat = Label(self, width=40, anchor='w')
-
-        # choices = ('Droog wegdek', 'Nat wegdek')
-        # # self.entry_wegdek.grid(row=2, column=1, sticky=E + W)
-        # self.cbo_wegdek = Combobox(self, state="readonly", width=40)
-        # self.cbo_wegdek['values'] = choices
-        # self.cbo_wegdek.grid(row=2, column=1, sticky=E + W)
-
-        # #Label(self, text="km/u").grid(row=0, column=2)
-        # Label(self, text="m/s").grid(row=0, column=2)
-        # Label(self, text="sec", pady=10).grid(row=1, column=2)
-
-        # self.buttonCalculate = Button(
-        #     self, text="Bereken stopafstand", command=self.calculateStopafstand)
-        # self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
-        #     0, 5), padx=(5, 5), sticky=N + S + E + W)
-
-        # Grid.rowconfigure(self, 2, weight=1)
-        # Grid.columnconfigure(self, 1, weight=1)
-
-        # root.protocol("WM_DELETE_WINDOW", _delete_window)
 
     def __del__(self):
         self.close_connection()
