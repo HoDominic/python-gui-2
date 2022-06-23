@@ -24,7 +24,7 @@ class Window(Frame):
         # Functies oproepen!
         self.init_window()
         self.makeConnnectionWithServer()
-        self.makeConnectionWithMysqlDatabase()
+        # self.makeConnectionWithMysqlDatabase()
 
     # Creation of init_window
     def init_window(self):
@@ -185,16 +185,7 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
 
-    def makeConnectionWithMysqlDatabase(self):
-        try:
-            logging.info("Making connection with MYSQL database...")
-            mydb = mysql.connector.connect(
-            host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
-
-            cursor = mydb.cursor()
-            logging.info("Connected with MYSQL database")
-        except Exception as ex:
-            logging.error(f"Foutmelding connection with database: {ex}")
+    
 
     def login_client(self):
         try:
@@ -251,7 +242,8 @@ class Window(Frame):
             logging.info(f"Client nickname: {client_nickname}")
             self.my_writer_obj.flush()
             self.master.destroy()
-            new_window()
+            New_Window(master)
+            
 
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
@@ -268,39 +260,46 @@ class Window(Frame):
             logging.error(f"Foutmelding: {ex}")
             # messagebox.showinfo("Stopafstand berekenen",
             #                     "Something has gone wrong...")
-            
+
     def __del__(self):
         self.close_connection()
 
+#Nieuwe window class
 class New_Window(Toplevel):
     def __init__(self, master=None):
         super().__init__(master = master)
-        self.title("New Window")
-        self.geometry("200x200")
-        label = Label(self, text ="This is a new Window")
-        label.pack()
+   
+        self.init_window()
+
+
+
+    def init_window(self):
+                self.title("New Window")
+                self.geometry("200x200")
+                label = Label(self, text ="This is a new Window")
+                label.pack()
 
 # creates a Tk() object
 
-def new_window():
-    master = Tk()
-    master.geometry("200x200")
+# def new_window():
+#     master = Tk()
+#     master.geometry("200x200")
     
-    label = Label(master, text ="This is the main window")
-    label.pack(side = TOP, pady = 10)
+#     label = Label(master, text ="This is the main window")
+#     label.pack(side = TOP, pady = 10)
     
-    # a button widget which will
-    # open a new window on button click
-    btn = Button(master,
-                text ="Click to open a new window")
+#     # a button widget which will
+#     # open a new window on button click
+#     btn = Button(master,
+#                 text ="Click to open a new window")
     
-    # Following line will bind click event
-    # On any click left / right button
-    # of mouse a new window will be opened
-    btn.bind("<Button>",
-            lambda e: New_Window(master))
+#     # Following line will bind click event
+#     # On any click left / right button
+#     # of mouse a new window will be opened
+#     btn.bind("<Button>",
+#             lambda e: New_Window(master))
     
-    btn.pack(pady = 10)
+#     btn.pack(pady = 10)
     
 # mainloop, runs infinitely
 
