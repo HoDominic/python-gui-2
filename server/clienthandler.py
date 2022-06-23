@@ -20,16 +20,23 @@ class ClientHandler(threading.Thread):
         io_stream_client = self.socket_to_client.makefile(mode='rw')
         io_stream_client.write("Client logged in! \n")
        # io_stream_client.write(f"{snelheid} {reactietijd} logged in!\n")        #newline karakter niet vergeten!
-        io_stream_client.flush()
+       # io_stream_client.flush()
 
 
         logging.info("CLH - started & waiting...")
         commando = io_stream_client.readline().rstrip('\n')
         while commando != "CLOSE":
+
             client_name = io_stream_client.readline().rstrip('\n')
-            logging.debug(f"CLH - Username: {client_name}")
-            reactietijd = io_stream_client.readline().rstrip('\n')
-            logging.debug(f"CLH - reactietijd: {reactietijd}")
+            client_nickname = io_stream_client.readline().rstrip('\n')
+            
+            logging.debug(f"CLH - Username: {client_name} ")  
+            logging.debug(f"CLH - Nickname: {client_nickname}")
+
+            io_stream_client.flush()
+
+           
+           
 
             #wegdek = io_stream_client.readline().rstrip('\n')
             #logging.debug(f"CLH - wegdek: {wegdek}")
@@ -41,9 +48,9 @@ class ClientHandler(threading.Thread):
             # io_stream_client.flush()
             # logging.debug(f"CLH - Sending back stopafstand: {berekening}")
 
-            # self.my_writer_obj.flush()
+          
 
-            commando = io_stream_client.readline().rstrip('\n')
+            
 
         logging.debug(f"CLH - Connection closed...")
         self.socket_to_client.close()
