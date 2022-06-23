@@ -1,4 +1,5 @@
 # https://pythonprogramming.net/python-3-tkinter-basics-tutorial/
+from doctest import master
 import logging
 from random import choices
 import socket
@@ -30,11 +31,7 @@ class Window(Frame):
 
         self.pack(fill=BOTH, expand=1)
 
-     
-
         Label(self, text="Client Name:", padx=10, pady=10).grid(row=0)
-        #Label(self).grid(column=1)
-       
         Label(self, text="Client Nickname:", pady=10).grid(row=1)
         Label(self, text="Client Email:", pady=10).grid(row=2)
       
@@ -60,7 +57,8 @@ class Window(Frame):
         self.master.geometry("350x150")
         self.master.resizable(False, False)
 #         self.master.mainloop()
-     
+
+
 
   # client to server message
             # io_stream_server = socket_to_server.makefile(mode='rw')
@@ -171,10 +169,6 @@ class Window(Frame):
 
     # win.destroy()
     # new_window.mainloop()
-     
-
-    def __del__(self):
-        self.close_connection()
 
     def makeConnnectionWithServer(self):
         try:
@@ -204,7 +198,6 @@ class Window(Frame):
 
     def login_client(self):
         try:
-
 
             mydb = mysql.connector.connect(
             host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
@@ -254,12 +247,11 @@ class Window(Frame):
             logging.info(f"Client name: { client_name }")
 
              
-           
-
             self.my_writer_obj.write(f"{ client_nickname}\n")
             logging.info(f"Client nickname: {client_nickname}")
-
             self.my_writer_obj.flush()
+            self.master.destroy()
+            new_window()
 
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
@@ -276,6 +268,42 @@ class Window(Frame):
             logging.error(f"Foutmelding: {ex}")
             # messagebox.showinfo("Stopafstand berekenen",
             #                     "Something has gone wrong...")
+            
+    def __del__(self):
+        self.close_connection()
+
+class New_Window(Toplevel):
+    def __init__(self, master=None):
+        super().__init__(master = master)
+        self.title("New Window")
+        self.geometry("200x200")
+        label = Label(self, text ="This is a new Window")
+        label.pack()
+
+# creates a Tk() object
+
+def new_window():
+    master = Tk()
+    master.geometry("200x200")
+    
+    label = Label(master, text ="This is the main window")
+    label.pack(side = TOP, pady = 10)
+    
+    # a button widget which will
+    # open a new window on button click
+    btn = Button(master,
+                text ="Click to open a new window")
+    
+    # Following line will bind click event
+    # On any click left / right button
+    # of mouse a new window will be opened
+    btn.bind("<Button>",
+            lambda e: New_Window(master))
+    
+    btn.pack(pady = 10)
+    
+# mainloop, runs infinitely
+
 
 
 logging.basicConfig(level=logging.INFO)
