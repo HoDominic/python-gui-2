@@ -55,10 +55,10 @@ class Window(Frame):
         Label(self, text="Reactietijd (sec):", pady=10).grid(row=1)
         Label(self, text="Type wegdek:", pady=10).grid(row=2)
 
-        self.entry_snelheid = Entry(self, width=20)
+        self.entry_client_name = Entry(self, width=40)
         self.entry_reactietijd = Entry(self, width=40)
-        self.entry_wegdek = Entry(self, width=40)
-        self.entry_snelheid.grid(row=0, column=1, sticky=E + W ,padx=(0, 10), pady=(10, 10))
+       # self.entry_wegdek = Entry(self, width=40)
+        self.entry_client_name.grid(row=0, column=1, sticky=E + W ,padx=(0, 10), pady=(10, 10))
         self.entry_reactietijd.grid(row=1, column=1, sticky=E + W)
 
         self.label_resultaat = Label(self, width=40, anchor='w')
@@ -296,20 +296,11 @@ class Window(Frame):
 
     def calculateStopafstand(self):
         try:
-            snelheid = str(self.entry_snelheid.get())
+            client_name  = str(self.entry_client_name.get())
             reactietijd = str(self.entry_reactietijd.get())
 
-            # wegdek = (self.cbo_wegdek.get())
-
-            # if wegdek == "Droog wegdek":
-            #     wegdek = 5
-            # else:
-            #     wegdek = 8
-
-            # print(type(wegdek))
-
-            self.my_writer_obj.write(f"{snelheid}\n")
-            logging.info(f"Sending snelheid: {snelheid}")
+            self.my_writer_obj.write(f"{ client_name }\n")
+            logging.info(f"Sending snelheid: { client_name }")
 
             self.my_writer_obj.write("%s\n" % reactietijd)
             logging.info(f"Sending reactietijd: {reactietijd}")
