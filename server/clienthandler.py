@@ -29,7 +29,7 @@ class ClientHandler(threading.Thread):
 
             client_name = io_stream_client.readline().rstrip('\n')
             client_nickname = io_stream_client.readline().rstrip('\n')
-            
+
             logging.debug(f"CLH - Username: {client_name} ")  
             logging.debug(f"CLH - Nickname: {client_nickname}")
 

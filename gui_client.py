@@ -50,16 +50,20 @@ class Window(Frame):
      
 
         Label(self, text="Client Name:", padx=10, pady=10).grid(row=0)
-        Label(self).grid(column=1)
+        #Label(self).grid(column=1)
        
         Label(self, text="Client Nickname:", pady=10).grid(row=1)
+        Label(self, text="Client Email:", pady=10).grid(row=2)
       
 
         self.entry_client_name = Entry(self, width=40)
         self.entry_client_nickname = Entry(self, width=40)
+        self.entry_client_email = Entry(self, width=40)
+
      
         self.entry_client_name.grid(row=0, column=1,padx=(0, 10), pady=(10, 10))
         self.entry_client_nickname.grid(row=1, column=1,padx=(0, 10), pady=(10, 10))
+        self.entry_client_email.grid(row=2, column=1,padx=(0, 10), pady=(10, 10))
 
         self.label_resultaat = Label(self, width=40, anchor='w')
 
@@ -73,88 +77,23 @@ class Window(Frame):
         # Label(self, text="m/s").grid(row=0, column=2)
         # Label(self, text="sec", pady=10).grid(row=1, column=2)
 
-        self.buttonCalculate = Button(
+        self.button_login = Button(
             self, text="Login", command=self.login_client)
-        self.buttonCalculate.grid(row=3, column=0, columnspan=3, pady=(
+        self.button_login.grid(row=3, column=0, columnspan=3, pady=(
             0, 5), padx=(5, 5), sticky=N + S + E + W)
-
-        #Grid.rowconfigure(self, 2, weight=1)
-        #Grid.columnconfigure(self, 1, weight=1)
 
         # root.protocol("WM_DELETE_WINDOW", _delete_window)
 
-       
-
-
-
-
-
-# # name text
-#         label1 = Label( self,textvariable=var1)
-#         var1.set("Client Name:")
-#         label1.grid(row=0, column=1)
-
-# # name input field
-#         entry = Entry( textvariable=client_name)
-# #client_name.set("Enter Name ")
-#         entry.grid(row=0, column=2)
-
-# # nickname text
-#         label2 = Label( textvariable=var2)
-#         var2.set("Client Nickname:")
-#         label2.grid(row=1, column=1)
-
-# # nickname input field
-#         entry2 = Entry( textvariable=client_nickname)
-#         entry2.grid(row=1, column=2)
-
-
-# # email text
-#         label3 = Label( textvariable=var3)
-#         var3.set("Client Email:")
-#         label3.grid(row=2, column=1)
-
-# # email input field
-#         entry3 = Entry(textvariable=client_email)
-#         entry3.grid(row=2, column=2, padx=20)
-
-
-# # butto
-#         btn = Button( text="Log in as client", command=add_client)
-#         btn.grid(row=4, column=2)
-
-
 
         self.master.title("Client login form")
-#         self.master.geometry("500x250")
-#         self.master.resizable(False, False)
+        self.master.geometry("350x150")
+        self.master.resizable(False, False)
 #         self.master.mainloop()
      
         #Initial login window
      
 
-        #functions in init_window
-        def login_client_to_server():
-            pass
-    # # Get gebruiken anders kan het de waarde niet lezen
-    #         client_name = entry.get()
-    #         client_nickname = entry2.get()
-    #         client_email = entry3.get()
-
-
-      
-
-        
-        
-        
-
-        
-
-
-
- 
-
-    # client to server message
+  # client to server message
             # io_stream_server = socket_to_server.makefile(mode='rw')
             # io_stream_server.write(f"{client_name}\n")
             # io_stream_server.flush()
@@ -310,6 +249,12 @@ class Window(Frame):
                 messagebox.showerror("Nickname Invalid",
                              "Nickname input can't be empty")
                 messagebox.ERROR("Empty nickname input error")
+
+            client_email = (self.entry_client_email.get())
+              # Email input error handling
+            if client_email == "":
+                messagebox.showerror("Email Invalid", "Email input can't be empty")
+                messagebox.ERROR("Empty email input error")
 
 
             #Send client login input
