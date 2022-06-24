@@ -56,7 +56,7 @@ class Window(Frame):
         self.master.title("Client login form")
         self.master.geometry("350x150")
         self.master.resizable(False, False)
-#         self.master.mainloop()
+        # self.master.mainloop()
 
 
 
@@ -185,6 +185,32 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
 
+    def new_window(self):
+        self.master = Tk()
+        self.master.geometry("200x200")
+        self.master.title("Client GUI")
+        
+        label = Label(master, text ="This is the main window")
+        label.pack(side = TOP, pady = 10)
+        
+        # a button widget which will
+        # open a new window on button click
+        btn = Button(master,
+                    text ="Click to open a new window")
+  
+    def close_connection(self):
+        try:
+            logging.info("Close connection with server...")
+            self.my_writer_obj.write("CLOSE\n")
+            self.my_writer_obj.flush()
+            self.socket_to_server.close()
+        except Exception as ex:
+            logging.error(f"Foutmelding: {ex}")
+            # messagebox.showinfo("Stopafstand berekenen",
+            #                     "Something has gone wrong...")
+
+    def __del__(self):
+        self.close_connection()
     
 
     def login_client(self):
@@ -242,7 +268,7 @@ class Window(Frame):
             logging.info(f"Client nickname: {client_nickname}")
             self.my_writer_obj.flush()
             self.master.destroy()
-            New_Window(master)
+            self.new_window()
             
 
         except Exception as ex:
@@ -250,34 +276,22 @@ class Window(Frame):
             messagebox.showinfo("Login error",
                                 "Something has gone wrong...")
 
-    def close_connection(self):
-        try:
-            logging.info("Close connection with server...")
-            self.my_writer_obj.write("CLOSE\n")
-            self.my_writer_obj.flush()
-            self.socket_to_server.close()
-        except Exception as ex:
-            logging.error(f"Foutmelding: {ex}")
-            # messagebox.showinfo("Stopafstand berekenen",
-            #                     "Something has gone wrong...")
 
-    def __del__(self):
-        self.close_connection()
 
-#Nieuwe window class
-class New_Window(Toplevel):
-    def __init__(self, master=None):
-        super().__init__(master = master)
+# #Nieuwe window class
+# class New_Window(Toplevel):
+#     def __init__(self, master=None):
+#         super().__init__(master = master)
    
-        self.init_window()
+#         self.init_window()
 
 
 
-    def init_window(self):
-                self.title("New Window")
-                self.geometry("200x200")
-                label = Label(self, text ="This is a new Window")
-                label.pack()
+    # def init_window(self):
+    #             self.title("New Window")
+    #             self.geometry("200x200")
+    #             label = Label(self, text ="This is a new Window")
+    #             label.pack()
 
 # creates a Tk() object
 
