@@ -15,9 +15,11 @@ import threading
 import time
 import tkinter as tk
 import mysql.connector
+import pickle
+import pandas as pd
+from matplotlib import pyplot as plt
 
-
-class Window(Frame):
+class LoginWindow(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
@@ -28,6 +30,7 @@ class Window(Frame):
 
     # Creation of init_window
     def init_window(self):
+        
 
         self.pack(fill=BOTH, expand=1)
 
@@ -56,7 +59,7 @@ class Window(Frame):
         self.master.title("Client login form")
         self.master.geometry("350x150")
         self.master.resizable(False, False)
-        # self.master.mainloop()
+        #self.master.mainloop()
 
 
 
@@ -296,7 +299,7 @@ class Window(Frame):
             self.my_writer_obj.flush()
             self.master.destroy()
             #New_Window.new_client_window(self)
-            New_Window.new_client_window(self)
+            ClientWindow.new_client_window(self)
             
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
@@ -317,38 +320,31 @@ class Window(Frame):
             #                     "Something has gone wrong...")
 
   
+
+
  
 
-class New_Window(Window):
+class ClientWindow(LoginWindow):
     def __init__(self, master=None):
         #super().__init__(master = master)
         self.master = master
         self.new_client_window()
         
         
+    
+
+    
         
 
     def new_client_window(self):
+       
 
         self.master = Tk()
         self.master.geometry("500x500")
         self.master.title("Client GUI")
 
 
-        def get_calories_data_thread():
-            get_calories_data_thread = threading.Thread(target=get_calories_data)
-            get_calories_data_thread.start()
-            time.sleep(1)
-
-        def get_rating_data_thread():
-            get_rating_data_thread = threading.Thread(target=get_sodium_data)
-            get_rating_data_thread.start()
-            time.sleep(1)
-
-        def get_sodium_data_thread():
-            get_sodium_data_thread = threading.Thread(target=get_sodium_data)
-            get_sodium_data_thread.start()
-            time.sleep(1)
+        
 
         def log_out_client():
             messagebox.askyesno("Log out", "Log out as client?")
@@ -366,8 +362,14 @@ class New_Window(Window):
             messagebox.showinfo('Log out', "Logged out!")
 
 
+        def get_calories_data_thread():
+            pass
 
+        def get_rating_data_thread():
+            pass
 
+        def get_sodium_data_thread():
+            pass
  
 
         my_tabs = ttk.Notebook(self.master)
@@ -420,23 +422,19 @@ class New_Window(Window):
         self.btn = Button(self.wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
         self.btn.pack(side=tk.LEFT,padx=30 ,pady=0)
 
-        
-
-
-      
-
-             #Log out as client
-        
-    
-
-        
- 
-  
 
 
     def __del__(self):
         self.close_connection()
+
+
+
+
+       
+
     
+
+
 
    
 
@@ -444,8 +442,7 @@ class New_Window(Window):
 
 
 
-# #Nieuwe window class
-# class New_Window(Toplevel):
+
 #     def __init__(self, master=None):
 #         super().__init__(master = master)
    
@@ -489,5 +486,5 @@ logging.basicConfig(level=logging.INFO)
 
 root = Tk()
 # root.geometry("400x300")
-app = Window(root)
+app = LoginWindow(root)
 root.mainloop()
