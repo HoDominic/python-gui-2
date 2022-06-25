@@ -342,6 +342,17 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
 
+    def close_connection(self):
+        try:
+            logging.info("Close connection with server...")
+            self.my_writer_obj.write("CLOSE\n")
+            self.my_writer_obj.flush()
+            self.socket_to_server.close()
+        except Exception as ex:
+            logging.error(f"Foutmelding: {ex}")
+            # messagebox.showinfo("Stopafstand berekenen",
+            #                     "Something has gone wrong...")
+
 
 
 
@@ -406,16 +417,7 @@ class New_Window(Window):
             messagebox.askyesno("Log out", "Log out as client?")
  
   
-    def close_connection(self):
-        try:
-            logging.info("Close connection with server...")
-            self.my_writer_obj.write("CLOSE\n")
-            self.my_writer_obj.flush()
-            self.socket_to_server.close()
-        except Exception as ex:
-            logging.error(f"Foutmelding: {ex}")
-            # messagebox.showinfo("Stopafstand berekenen",
-            #                     "Something has gone wrong...")
+
 
     def __del__(self):
         self.close_connection()
