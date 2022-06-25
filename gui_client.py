@@ -292,7 +292,7 @@ class Window(Frame):
             logging.info(f"Client nickname: {client_nickname}")
 
             self.my_writer_obj.write(f"{ client_email}\n")
-            logging.info(f"Client nickname: {client_email}")
+            logging.info(f"Client email: {client_email}")
             self.my_writer_obj.flush()
             self.master.destroy()
             #New_Window.new_client_window(self)
