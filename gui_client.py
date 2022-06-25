@@ -170,6 +170,44 @@ class Window(Frame):
     # win.destroy()
     # new_window.mainloop()
 
+
+    def new_client_window(self):
+        self.master = Tk()
+        self.master.geometry("200x200")
+        self.master.title("Client GUI")
+
+        my_tabs = ttk.Notebook(self.master)
+        my_tabs.pack(pady=15)
+
+        tab1 = Frame(my_tabs,width=500,height=500)
+        tab1.pack(fill='both', expand=1)
+        tab2 = Frame(my_tabs,width=500,height=500 )
+        tab2.pack(fill='both', expand=1)
+
+        tab3 = Frame(my_tabs,width=500,height=500 )
+        tab3.pack(fill='both', expand=1)
+
+        my_tabs.add(tab1, text='Tab1')
+        my_tabs.add(tab2, text='Tab2')
+        my_tabs.add(tab3, text='Tab3')
+    
+
+        # Label frames
+        wrapper1 = LabelFrame(tab1, text="Clients List")
+        wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+         # self.label = Label(master, text ="This is the main window")
+        # self.label.pack(master,side = TOP, pady = 10)
+
+       
+
+
+        
+
+        
+       
+        
+        
+
     def makeConnnectionWithServer(self):
         try:
             logging.info("Making connection with server...")
@@ -185,18 +223,7 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
 
-    def new_client_window(self):
-        self.master = Tk()
-        self.master.geometry("200x200")
-        self.master.title("Client GUI")
-        
-        label = Label(master, text ="This is the main window")
-        label.pack(side = TOP, pady = 10)
-        
-        # a button widget which will
-        # open a new window on button click
-        btn = Button(master,
-                    text ="Click to open a new window")
+    
   
     def close_connection(self):
         try:
