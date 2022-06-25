@@ -171,46 +171,7 @@ class Window(Frame):
     # new_window.mainloop()
 
 
-    def new_client_window(self):
-        self.master = Tk()
-        self.master.geometry("500x500")
-        self.master.title("Client GUI")
-
-        my_tabs = ttk.Notebook(self.master)
-        my_tabs.pack(pady=15)
-
-        self.tab1 = Frame(my_tabs,width=500,height=500)
-        self.tab1.pack(fill='both', expand=1)
-        self.tab2 = Frame(my_tabs,width=500,height=500 )
-        self.tab2.pack(fill='both', expand=1)
-
-        self.tab3 = Frame(my_tabs,width=500,height=500 )
-        self.tab3.pack(fill='both', expand=1)
-
-        my_tabs.add(self.tab1, text='Tab1')
-        my_tabs.add(self.tab2, text='Tab2')
-        my_tabs.add(self.tab3, text='Tab3')
-    
-
-        
-         # Label frames
-        self.wrapper1 = LabelFrame(self.tab1, text="Clients List")
-        self.wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper2 = LabelFrame(self.tab1, text="Get data by brand")
-        self.wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper3 = LabelFrame(self.tab1, text="Get amount of brands by calories per serving")
-        self.wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper4 = LabelFrame(self.tab1, text="Get amount of brands by rating")
-        self.wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper5 = LabelFrame(self.tab1, text="Get amount of brands by sodium")
-        self.wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
-        self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+  
 
    
 
@@ -261,7 +222,20 @@ class Window(Frame):
          # self.label = Label(master, text ="This is the main window")
         # self.label.pack(master,side = TOP, pady = 10)
 
-     
+    def makeConnnectionWithServer(self):
+        try:
+            logging.info("Making connection with server...")
+            # get local machine name
+            host = socket.gethostname()
+            port = 9999
+            self.socket_to_server = socket.socket(
+                socket.AF_INET, socket.SOCK_STREAM)
+            # connection to hostname on the port.
+            self.socket_to_server.connect((host, port))
+            self.my_writer_obj = self.socket_to_server.makefile(mode='rw')
+            logging.info("Open connection with server succesfully")
+        except Exception as ex:
+            logging.error(f"Foutmelding: {ex}")
 
     def login_client(self):
         try:
@@ -316,31 +290,20 @@ class Window(Frame):
              
             self.my_writer_obj.write(f"{ client_nickname}\n")
             logging.info(f"Client nickname: {client_nickname}")
+
+            self.my_writer_obj.write(f"{ client_email}\n")
+            logging.info(f"Client nickname: {client_email}")
             self.my_writer_obj.flush()
             self.master.destroy()
-            self.new_client_window()
+            #New_Window.new_client_window(self)
+            New_Window.new_client_window(self)
             
-
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
             messagebox.showinfo("Login error",
                                 "Something has gone wrong...")
 
-    
-    def makeConnnectionWithServer(self):
-        try:
-            logging.info("Making connection with server...")
-            # get local machine name
-            host = socket.gethostname()
-            port = 9999
-            self.socket_to_server = socket.socket(
-                socket.AF_INET, socket.SOCK_STREAM)
-            # connection to hostname on the port.
-            self.socket_to_server.connect((host, port))
-            self.my_writer_obj = self.socket_to_server.makefile(mode='rw')
-            logging.info("Open connection with server succesfully")
-        except Exception as ex:
-            logging.error(f"Foutmelding: {ex}")
+
 
     def close_connection(self):
         try:
@@ -353,18 +316,59 @@ class Window(Frame):
             # messagebox.showinfo("Stopafstand berekenen",
             #                     "Something has gone wrong...")
 
-
-
+  
+ 
 
 class New_Window(Window):
     def __init__(self, master=None):
-        super().__init__(master = master)
+        #super().__init__(master = master)
         self.master = master
-        #self.login_client()
+        self.new_client_window()
+        
+        
+        
+
+    def new_client_window(self):
 
         self.master = Tk()
         self.master.geometry("500x500")
         self.master.title("Client GUI")
+
+
+        def get_calories_data_thread():
+            get_calories_data_thread = threading.Thread(target=get_calories_data)
+            get_calories_data_thread.start()
+            time.sleep(1)
+
+        def get_rating_data_thread():
+            get_rating_data_thread = threading.Thread(target=get_sodium_data)
+            get_rating_data_thread.start()
+            time.sleep(1)
+
+        def get_sodium_data_thread():
+            get_sodium_data_thread = threading.Thread(target=get_sodium_data)
+            get_sodium_data_thread.start()
+            time.sleep(1)
+
+        def log_out_client():
+            messagebox.askyesno("Log out", "Log out as client?")
+
+            mydb = mysql.connector.connect(
+            host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
+            cursor = mydb.cursor()
+
+            #delete most recent Id in DB
+            query = "DELETE FROM thuisopdracht.clients ORDER BY id desc limit 1"
+            cursor.execute(query)
+            mydb.commit()
+            
+            print("Logged out as client!")
+            messagebox.showinfo('Log out', "Logged out!")
+
+
+
+
+ 
 
         my_tabs = ttk.Notebook(self.master)
         my_tabs.pack(pady=15)
@@ -402,19 +406,30 @@ class New_Window(Window):
         self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
         self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
 
+         #log out client button
+        self.btn = Button(self.wrapper1, text="Log out", command=log_out_client)
+        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        #get calories by chart button
+        self.btn = Button(self.wrapper2, text="Calories by brand", command=get_calories_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        self.btn = Button(self.wrapper2, text="Rating by brand", command=get_rating_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+        self.btn = Button(self.wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+
+        
 
 
-
-
-
-                  # #log out client button
-        btn = Button(self.wrapper1, text="Log out", command=log_out_client)
-        btn.pack(side=tk.LEFT,padx=10 ,pady=0)
-
+      
 
              #Log out as client
-        def log_out_client():
-            messagebox.askyesno("Log out", "Log out as client?")
+        
+    
+
+        
  
   
 
