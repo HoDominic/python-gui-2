@@ -24,7 +24,7 @@ class Window(Frame):
         # Functies oproepen!
         self.init_window()
         self.makeConnnectionWithServer()
-        # self.makeConnectionWithMysqlDatabase()
+
 
     # Creation of init_window
     def init_window(self):
@@ -173,72 +173,95 @@ class Window(Frame):
 
     def new_client_window(self):
         self.master = Tk()
-        self.master.geometry("200x200")
+        self.master.geometry("500x500")
         self.master.title("Client GUI")
 
         my_tabs = ttk.Notebook(self.master)
         my_tabs.pack(pady=15)
 
-        tab1 = Frame(my_tabs,width=500,height=500)
-        tab1.pack(fill='both', expand=1)
-        tab2 = Frame(my_tabs,width=500,height=500 )
-        tab2.pack(fill='both', expand=1)
+        self.tab1 = Frame(my_tabs,width=500,height=500)
+        self.tab1.pack(fill='both', expand=1)
+        self.tab2 = Frame(my_tabs,width=500,height=500 )
+        self.tab2.pack(fill='both', expand=1)
 
-        tab3 = Frame(my_tabs,width=500,height=500 )
-        tab3.pack(fill='both', expand=1)
+        self.tab3 = Frame(my_tabs,width=500,height=500 )
+        self.tab3.pack(fill='both', expand=1)
 
-        my_tabs.add(tab1, text='Tab1')
-        my_tabs.add(tab2, text='Tab2')
-        my_tabs.add(tab3, text='Tab3')
+        my_tabs.add(self.tab1, text='Tab1')
+        my_tabs.add(self.tab2, text='Tab2')
+        my_tabs.add(self.tab3, text='Tab3')
     
 
-        # Label frames
-        wrapper1 = LabelFrame(tab1, text="Clients List")
-        wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+        
+         # Label frames
+        self.wrapper1 = LabelFrame(self.tab1, text="Clients List")
+        self.wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper2 = LabelFrame(self.tab1, text="Get data by brand")
+        self.wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper3 = LabelFrame(self.tab1, text="Get amount of brands by calories per serving")
+        self.wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper4 = LabelFrame(self.tab1, text="Get amount of brands by rating")
+        self.wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper5 = LabelFrame(self.tab1, text="Get amount of brands by sodium")
+        self.wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
+        self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+
+   
+
+        # #get calories by chart button
+        # btn = Button(wrapper2, text="Calories by brand", command=get_calories_data_thread)
+        # btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        # btn = Button(wrapper2, text="Rating by brand", command=get_rating_data_thread)
+        # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+        # btn = Button(wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
+        # btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+
+
+    #WRAPPER3
+    # input_calories = Label(wrapper3, text='input minvalue calories')
+    # input_calories.pack(side=tk.LEFT, padx=10)
+    # entry_client = Entry(wrapper3)
+    # entry_client.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper3, text="Get data", command=get_calories_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+    # #WRAPPER4
+    # input_rating = Label(wrapper4, text='input minvalue rating')
+    # input_rating.pack(side=tk.LEFT, padx=10)
+    # entry_client2 = Entry(wrapper4)
+    # entry_client2.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper4, text="Get data", command=get_ratings_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+    # #WRAPPER5
+    # input_rating = Label(wrapper5, text='input minvalue sodium')
+    # input_rating.pack(side=tk.LEFT, padx=10)
+    # entry_client3 = Entry(wrapper5)
+    # entry_client3.pack(side=tk.LEFT, padx=10)
+
+    # btn = Button(wrapper5, text="Get data", command=get_sodium_with_params_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+    # #WRAPPER6
+    # btn = Button(wrapper6, text="Read admin message", command=read_admin_message_thread)
+    # btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
          # self.label = Label(master, text ="This is the main window")
         # self.label.pack(master,side = TOP, pady = 10)
 
-       
-
-
-        
-
-        
-       
-        
-        
-
-    def makeConnnectionWithServer(self):
-        try:
-            logging.info("Making connection with server...")
-            # get local machine name
-            host = socket.gethostname()
-            port = 9999
-            self.socket_to_server = socket.socket(
-                socket.AF_INET, socket.SOCK_STREAM)
-            # connection to hostname on the port.
-            self.socket_to_server.connect((host, port))
-            self.my_writer_obj = self.socket_to_server.makefile(mode='rw')
-            logging.info("Open connection with server succesfully")
-        except Exception as ex:
-            logging.error(f"Foutmelding: {ex}")
-
-    
-  
-    def close_connection(self):
-        try:
-            logging.info("Close connection with server...")
-            self.my_writer_obj.write("CLOSE\n")
-            self.my_writer_obj.flush()
-            self.socket_to_server.close()
-        except Exception as ex:
-            logging.error(f"Foutmelding: {ex}")
-            # messagebox.showinfo("Stopafstand berekenen",
-            #                     "Something has gone wrong...")
-
-    def __del__(self):
-        self.close_connection()
-    
+     
 
     def login_client(self):
         try:
@@ -302,6 +325,105 @@ class Window(Frame):
             logging.error(f"Foutmelding: {ex}")
             messagebox.showinfo("Login error",
                                 "Something has gone wrong...")
+
+    
+    def makeConnnectionWithServer(self):
+        try:
+            logging.info("Making connection with server...")
+            # get local machine name
+            host = socket.gethostname()
+            port = 9999
+            self.socket_to_server = socket.socket(
+                socket.AF_INET, socket.SOCK_STREAM)
+            # connection to hostname on the port.
+            self.socket_to_server.connect((host, port))
+            self.my_writer_obj = self.socket_to_server.makefile(mode='rw')
+            logging.info("Open connection with server succesfully")
+        except Exception as ex:
+            logging.error(f"Foutmelding: {ex}")
+
+
+
+
+class New_Window(Window):
+    def __init__(self, master=None):
+        super().__init__(master = master)
+        self.master = master
+        #self.login_client()
+
+        self.master = Tk()
+        self.master.geometry("500x500")
+        self.master.title("Client GUI")
+
+        my_tabs = ttk.Notebook(self.master)
+        my_tabs.pack(pady=15)
+
+        self.tab1 = Frame(my_tabs,width=500,height=500)
+        self.tab1.pack(fill='both', expand=1)
+        self.tab2 = Frame(my_tabs,width=500,height=500 )
+        self.tab2.pack(fill='both', expand=1)
+
+        self.tab3 = Frame(my_tabs,width=500,height=500 )
+        self.tab3.pack(fill='both', expand=1)
+
+        my_tabs.add(self.tab1, text='Tab1')
+        my_tabs.add(self.tab2, text='Tab2')
+        my_tabs.add(self.tab3, text='Tab3')
+    
+
+        
+         # Label frames
+        self.wrapper1 = LabelFrame(self.tab1, text="Clients List")
+        self.wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper2 = LabelFrame(self.tab1, text="Get data by brand")
+        self.wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper3 = LabelFrame(self.tab1, text="Get amount of brands by calories per serving")
+        self.wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper4 = LabelFrame(self.tab1, text="Get amount of brands by rating")
+        self.wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper5 = LabelFrame(self.tab1, text="Get amount of brands by sodium")
+        self.wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
+        self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+
+
+
+
+
+
+                  # #log out client button
+        btn = Button(self.wrapper1, text="Log out", command=log_out_client)
+        btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+
+             #Log out as client
+        def log_out_client():
+            messagebox.askyesno("Log out", "Log out as client?")
+ 
+  
+    def close_connection(self):
+        try:
+            logging.info("Close connection with server...")
+            self.my_writer_obj.write("CLOSE\n")
+            self.my_writer_obj.flush()
+            self.socket_to_server.close()
+        except Exception as ex:
+            logging.error(f"Foutmelding: {ex}")
+            # messagebox.showinfo("Stopafstand berekenen",
+            #                     "Something has gone wrong...")
+
+    def __del__(self):
+        self.close_connection()
+    
+
+   
+
+    
 
 
 
