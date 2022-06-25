@@ -185,7 +185,7 @@ class Window(Frame):
         except Exception as ex:
             logging.error(f"Foutmelding: {ex}")
 
-    def new_window(self):
+    def new_client_window(self):
         self.master = Tk()
         self.master.geometry("200x200")
         self.master.title("Client GUI")
@@ -268,7 +268,7 @@ class Window(Frame):
             logging.info(f"Client nickname: {client_nickname}")
             self.my_writer_obj.flush()
             self.master.destroy()
-            self.new_window()
+            self.new_client_window()
             
 
         except Exception as ex:
