@@ -372,6 +372,14 @@ class ClientWindow(LoginWindow):
         def get_sodium_data_thread():
             get_sodium_data_thread = threading.Thread(target=get_sodium_data)
             get_sodium_data_thread.start() 
+
+        def get_calories_with_params_thread():
+            get_calories_with_params_thread = threading.Thread(target=get_calories_with_params)
+            get_calories_with_params_thread.start()   
+
+        def get_ratings_with_params_thread():
+            get_ratings_with_params_thread = threading.Thread(target=get_ratings_with_params)
+            get_ratings_with_params_thread.start()
         
 
         my_tabs = ttk.Notebook(self.master)
@@ -423,6 +431,42 @@ class ClientWindow(LoginWindow):
 
         self.btn = Button(self.wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
         self.btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+
+        
+
+
+
+        self.input_calories = Label(self.wrapper3, text='input minvalue calories')
+        self.input_calories.pack(side=tk.LEFT, padx=10)
+        self.entry_client = Entry(self.wrapper3)
+        self.entry_client.pack(side=tk.LEFT, padx=10)
+
+        self.btn = Button(self.wrapper3, text="Get data", command=get_calories_with_params_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+        #WRAPPER4
+        self.input_rating = Label(self.wrapper4, text='input minvalue rating')
+        self.input_rating.pack(side=tk.LEFT, padx=10)
+        self.entry_client2 = Entry(self.wrapper4)
+        self.entry_client2.pack(side=tk.LEFT, padx=10)
+
+        self.btn = Button(self.wrapper4, text="Get data", command=get_ratings_with_params_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+        #WRAPPER5
+        self.input_rating = Label(self.wrapper5, text='input minvalue sodium')
+        self.input_rating.pack(side=tk.LEFT, padx=10)
+        entry_client3 = Entry(self.wrapper5)
+        entry_client3.pack(side=tk.LEFT, padx=10)
+
+        self.btn = Button(self.wrapper5, text="Get data", command=get_sodium_with_params_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+
+        #WRAPPER6
+        self.btn = Button(self.wrapper6, text="Read admin message", command=read_admin_message_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
 
 
         
@@ -576,7 +620,72 @@ class ClientWindow(LoginWindow):
             plt.show()
 
 
+        def get_calories_with_params():
+        
+            global input_param
 
+            #get client entry value as int
+            input_param =  int(self.entry_client.get())
+            print(input_param)
+                
+
+            txt_data_file = open(r'C:\Users\domin\OneDrive\Bureaublad\MCT2\semester2\Advanced_programming_maths\2022-labooplossingen-HoDominic\project-2022-HoDominic\cereals_data.txt', 'rb')
+            txt_data = pickle.load(txt_data_file)
+
+            #get dataframe (pickled)data from client
+            #calories data
+            calories_column = txt_data['calories']
+            calories_column = sorted(txt_data['calories'])
+            print(calories_column)
+    
+            #bins data
+            bins_column=  bins = [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160]
+            bins_column = sorted(bins)
+
+            #print(calories_column)
+            #turn list of str in list of int
+            calories_column_int = [int(values) for values in calories_column]
+        
+
+            #condition calories list with input parameter
+            calories_column_with_param = [i for i in calories_column_int if i >= input_param]
+            
+                
+            #sort
+            sorted_calories_column_with_param = sorted(calories_column_with_param)
+            print(sorted_calories_column_with_param)
+
+                
+
+            #*CHART CALORIES BY CEREAL BRAND WITH PARAMETER
+            #chart size
+        
+            plt.figure(figsize=(30,30))
+                
+            #label font size
+            plt.rcParams.update({'font.size': 6})
+                
+            #configure x and y for chart
+            chart_x =  sorted_calories_column_with_param
+            chart_y =  bins_column
+
+            print(chart_x)
+            print(chart_y)
+
+
+
+            plt.hist(chart_x,chart_y)
+        
+        
+
+            font1 = {'family':'serif','color':'blue','size':14}
+            font1_title = {'family':'serif','color':'blue','size':20}
+
+            plt.xlabel('Calories',fontdict = font1)
+            plt.ylabel('Amount of cereal brands',fontdict = font1)
+            plt.title(f'Cereals with minimum {input_param} calories (per serving) ',fontdict = font1_title)
+
+            plt.show()
 
 
 
