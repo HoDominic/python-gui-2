@@ -388,6 +388,12 @@ class ClientWindow(LoginWindow):
         def read_admin_message_thread():
             read_admin_message_thread = threading.Thread(target=read_admin_message)
             read_admin_message_thread.start()
+
+        def read_admin_message():
+            with open(r'C:\Users\domin\OneDrive\Bureaublad\MCT2\semester2\Advanced_programming_maths\2022-labooplossingen-HoDominic\project-2022-HoDominic\admin_to_client_message.txt','r') as rf:
+                rf_content = rf.read()
+                print(rf_content)
+                messagebox.showinfo('Message', f"{rf_content}")
         
         #Client GUI tabs
         my_tabs = ttk.Notebook(self.master)
