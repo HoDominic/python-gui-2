@@ -326,15 +326,10 @@ class LoginWindow(Frame):
 
 class ClientWindow(LoginWindow):
     def __init__(self, master=None):
-        #super().__init__(master = master)
+        #Frame.__init__(self, master)
+        super().__init__(master = master)
         self.master = master
-        self.new_client_window()
-        
-        
-    
-
-    
-        
+        self.new_client_window()        
 
     def new_client_window(self):
        
