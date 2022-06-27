@@ -688,9 +688,73 @@ class ClientWindow(LoginWindow):
             plt.show()
 
 
+        def get_ratings_with_params():
+            global input_param_rating
 
+            #get client entry value as int
+            input_param_rating =  int(self.entry_client2.get())
+            print(input_param_rating)
+    
+            txt_data_file = open(r'C:\Users\domin\OneDrive\Bureaublad\MCT2\semester2\Advanced_programming_maths\2022-labooplossingen-HoDominic\project-2022-HoDominic\cereals_data.txt', 'rb')
+            txt_data = pickle.load(txt_data_file)
+
+            #get dataframe (pickled)data from client
+            #calories data
+            ratings_column = txt_data['rating']
+            ratings_column = sorted(txt_data['rating'])
+            print(ratings_column)
+        
+
+            #bins data
+            bins_column=  bins = [0,10,20,30,40,50,60,70,80,90,100]
+            bins_column = sorted(bins)
+
+    
+            #turn list of str in list of int
+            ratings_column_int = [float(values) for values in ratings_column]
+            #print(calories_column_int)
+
+            #condition calories list with input parameter
+            ratings_column_with_param = [i for i in ratings_column_int if i >= input_param_rating]
+        
+                
+            #sort
+            sorted_ratings_column_with_param = sorted(ratings_column_with_param)
+            print(sorted_ratings_column_with_param)
+
+                
+
+            #*CHART CALORIES BY CEREAL BRAND WITH PARAMETER
+            #chart size
+        
+            plt.figure(figsize=(30,30))
+                
+            #label font size
+            plt.rcParams.update({'font.size': 6})
+                
+            #configure x and y for chart
+            chart_x =  sorted_ratings_column_with_param
+            chart_y =  bins_column
+
+            print(chart_x)
+            print(chart_y)
+
+
+
+            plt.hist(chart_x,chart_y)
         
         
+
+            font1 = {'family':'serif','color':'blue','size':14}
+            font1_title = {'family':'serif','color':'blue','size':20}
+
+            plt.xlabel('Rating',fontdict = font1)
+            plt.ylabel('Amount of cereal brands',fontdict = font1)
+            plt.title(f'Cereals with minimum rating of {input_param_rating} ',fontdict = font1_title)
+
+            plt.show()
+            
+            
 
 
       
