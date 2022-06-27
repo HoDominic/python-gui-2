@@ -384,6 +384,10 @@ class ClientWindow(LoginWindow):
         def get_sodium_with_params_thread():
             get_sodium_with_params_thread = threading.Thread(target=get_sodium_with_params)
             get_sodium_with_params_thread.start()
+
+        def read_admin_message_thread():
+            read_admin_message_thread = threading.Thread(target=read_admin_message)
+            read_admin_message_thread.start()
         
         #Client GUI tabs
         my_tabs = ttk.Notebook(self.master)
