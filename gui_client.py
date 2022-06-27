@@ -335,6 +335,8 @@ class ClientWindow(LoginWindow):
 
 
 
+
+
     def new_client_window(self):
        
         self.master = Tk()
@@ -345,7 +347,6 @@ class ClientWindow(LoginWindow):
 
         def log_out_client():
             messagebox.askyesno("Log out", "Log out as client?")
-
             mydb = mysql.connector.connect(
             host='localhost', user="root", passwd="root", database="thuisopdracht", auth_plugin="mysql_native_password")
             cursor = mydb.cursor()
@@ -357,6 +358,75 @@ class ClientWindow(LoginWindow):
             
             print("Logged out as client!")
             messagebox.showinfo('Log out', "Logged out!")
+
+        
+        def get_calories_data_thread():
+            get_calories_data_thread = threading.Thread(target=get_calories_data)
+            get_calories_data_thread.start()
+            time.sleep(1)
+
+        def get_rating_data_thread():
+            get_rating_data_thread = threading.Thread(target=get_rating_data)
+            get_rating_data_thread.start() 
+
+        def get_sodium_data_thread():
+            get_sodium_data_thread = threading.Thread(target=get_sodium_data)
+            get_sodium_data_thread.start() 
+        
+
+        my_tabs = ttk.Notebook(self.master)
+        my_tabs.pack(pady=15)
+
+        self.tab1 = Frame(my_tabs,width=500,height=500)
+        self.tab1.pack(fill='both', expand=1)
+        self.tab2 = Frame(my_tabs,width=500,height=500 )
+        self.tab2.pack(fill='both', expand=1)
+
+        self.tab3 = Frame(my_tabs,width=500,height=500 )
+        self.tab3.pack(fill='both', expand=1)
+
+        my_tabs.add(self.tab1, text='Tab1')
+        my_tabs.add(self.tab2, text='Tab2')
+        my_tabs.add(self.tab3, text='Tab3')
+    
+
+  
+         # Label frames
+        self.wrapper1 = LabelFrame(self.tab1, text="Clients List")
+        self.wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper2 = LabelFrame(self.tab1, text="Get data by brand")
+        self.wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper3 = LabelFrame(self.tab1, text="Get amount of brands by calories per serving")
+        self.wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper4 = LabelFrame(self.tab1, text="Get amount of brands by rating")
+        self.wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper5 = LabelFrame(self.tab1, text="Get amount of brands by sodium")
+        self.wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
+
+        self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
+        self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
+
+         #log out client button
+        self.btn = Button(self.wrapper1, text="Log out", command=log_out_client)
+        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        #get calories by chart button
+        self.btn = Button(self.wrapper2, text="Calories by brand", command=get_calories_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
+
+        self.btn = Button(self.wrapper2, text="Rating by brand", command=get_rating_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
+
+        self.btn = Button(self.wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
+        self.btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+
+
+        
+       
 
 
             #Get pickle data from txt files
@@ -408,80 +478,113 @@ class ClientWindow(LoginWindow):
             plt.show()
 
 
+        def get_rating_data():
+            txt_data_file = open(r'C:\Users\domin\OneDrive\Bureaublad\MCT2\semester2\Advanced_programming_maths\2022-labooplossingen-HoDominic\project-2022-HoDominic\cereals_data.txt', 'rb')
+            txt_data = pickle.load(txt_data_file)
+
+            #get dataframe (pickled)data from client
+            #protein data
+            calories_column = txt_data['rating']
+            calories_column = sorted(txt_data['rating'])
+            #brands data
+            brands_column = txt_data['name']
+            brands_column = sorted(txt_data['name'])
+        
+            txt_data_file.close()
+
+
+            #*CHART CALORIES BY CEREAL BRAND
+            #chart size
+            chart_figure = plt.figure(figsize=(30,30))
+            
+            #label font size
+            plt.rcParams.update({'font.size': 6})
+            
+            #configure x and y for chart
+            chart_x =  calories_column
+            chart_y =  brands_column
+
+            
+
+            #sort list by value!
+            sorted_chartx = sorted(chart_x,key=float)
+            sorted_charty = sorted(chart_y,key=str)
+            logging.info(sorted_chartx)
+            logging.info(sorted_charty)
+
+            #?Set x-axis
+            plt.xticks([0,10,20,30,40,50,60,70,80,90,100])
+            plt.xlim([0, 100])
+
+            bar_width = [0.4]
+            plt.barh(chart_y,chart_x,height=bar_width )
+
+            font1 = {'family':'serif','color':'blue','size':14}
+            font1_title = {'family':'serif','color':'blue','size':20}
+
+            plt.xlabel('Rating',fontdict = font1)
+            plt.ylabel('Brand',fontdict = font1)
+            plt.title('Rating by brand',fontdict = font1_title)
+
+            plt.show()
+
+
+        def get_sodium_data():
+            txt_data_file = open(r'C:\Users\domin\OneDrive\Bureaublad\MCT2\semester2\Advanced_programming_maths\2022-labooplossingen-HoDominic\project-2022-HoDominic\cereals_data.txt', 'rb')
+            txt_data = pickle.load(txt_data_file)
+
+            #get dataframe (pickled)data from client
+            #sodium data
+            sodium_column = txt_data['sodium']
+            sodium_column = sorted(txt_data['sodium'])
+            #brands data
+            brands_column = txt_data['name']
+            brands_column = sorted(txt_data['name'])
+        
+            txt_data_file.close()
+
+
+            #*CHART CALORIES BY CEREAL BRAND
+            #chart size
+            chart_figure = plt.figure(figsize=(30,30))
+            
+            #label font size
+            plt.rcParams.update({'font.size': 6})
+            
+            #configure x and y for chart
+            chart_x =  sodium_column
+            chart_y =  brands_column
+
+            
+
+            #sort list by value!
+            sorted_chartx = sorted(chart_x,key=float)
+            sorted_charty = sorted(chart_y,key=str)
+            logging.info(sorted_chartx)
+            logging.info(sorted_charty)
+
+            bar_width = [0.4]
+            plt.barh(sorted_charty,sorted_chartx,height=bar_width )
+
+            font1 = {'family':'serif','color':'blue','size':14}
+            font1_title = {'family':'serif','color':'blue','size':20}
+
+            plt.xlabel('Sodium',fontdict = font1)
+            plt.ylabel('Brand',fontdict = font1)
+            plt.title('Sodium by brand',fontdict = font1_title)
+
+            plt.show()
 
 
 
 
 
 
-
-
-
-        def get_calories_data_thread():
-            get_calories_data_thread = threading.Thread(target=get_calories_data)
-            get_calories_data_thread.start()
-            time.sleep(1)
-
-        def get_rating_data_thread():
-            pass
-
-        def get_sodium_data_thread():
-            pass
+        
         
 
-        
-        
 
-
-        my_tabs = ttk.Notebook(self.master)
-        my_tabs.pack(pady=15)
-
-        self.tab1 = Frame(my_tabs,width=500,height=500)
-        self.tab1.pack(fill='both', expand=1)
-        self.tab2 = Frame(my_tabs,width=500,height=500 )
-        self.tab2.pack(fill='both', expand=1)
-
-        self.tab3 = Frame(my_tabs,width=500,height=500 )
-        self.tab3.pack(fill='both', expand=1)
-
-        my_tabs.add(self.tab1, text='Tab1')
-        my_tabs.add(self.tab2, text='Tab2')
-        my_tabs.add(self.tab3, text='Tab3')
-    
-
-        
-         # Label frames
-        self.wrapper1 = LabelFrame(self.tab1, text="Clients List")
-        self.wrapper1.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper2 = LabelFrame(self.tab1, text="Get data by brand")
-        self.wrapper2.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper3 = LabelFrame(self.tab1, text="Get amount of brands by calories per serving")
-        self.wrapper3.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper4 = LabelFrame(self.tab1, text="Get amount of brands by rating")
-        self.wrapper4.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper5 = LabelFrame(self.tab1, text="Get amount of brands by sodium")
-        self.wrapper5.pack(fill="both", expand="yes", padx=20, pady=10)
-
-        self.wrapper6 = LabelFrame(self.tab2, text="Read admin message")
-        self.wrapper6.pack(fill="both", expand="yes", padx=20, pady=10)
-
-         #log out client button
-        self.btn = Button(self.wrapper1, text="Log out", command=log_out_client)
-        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
-
-        #get calories by chart button
-        self.btn = Button(self.wrapper2, text="Calories by brand", command=get_calories_data_thread)
-        self.btn.pack(side=tk.LEFT,padx=10 ,pady=0)
-
-        self.btn = Button(self.wrapper2, text="Rating by brand", command=get_rating_data_thread)
-        self.btn.pack(side=tk.LEFT,padx=20 ,pady=0)
-
-        self.btn = Button(self.wrapper2, text="Sodium by brand", command=get_sodium_data_thread)
-        self.btn.pack(side=tk.LEFT,padx=30 ,pady=0)
+      
 
 
 
