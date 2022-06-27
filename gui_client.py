@@ -331,15 +331,17 @@ class ClientWindow(LoginWindow):
         self.master = master
         self.new_client_window()        
 
+
+
+
+
     def new_client_window(self):
        
-
         self.master = Tk()
         self.master.geometry("500x500")
         self.master.title("Client GUI")
 
 
-        
 
         def log_out_client():
             messagebox.askyesno("Log out", "Log out as client?")
@@ -357,15 +359,79 @@ class ClientWindow(LoginWindow):
             messagebox.showinfo('Log out', "Logged out!")
 
 
+            #Get pickle data from txt files
+        def get_calories_data():
+            txt_data_file = open(r'C:\Users\domin\OneDrive\Bureaublad\python-gui-2\dataset\cereals_data.txt', 'rb')
+            txt_data = pickle.load(txt_data_file)
+
+            #get dataframe (pickled)data from client
+            #protein data
+            calories_column = txt_data['calories']
+            calories_column = sorted(txt_data['calories'])
+            #brands data
+            brands_column = txt_data['name']
+            brands_column = sorted(txt_data['name'])
+        
+            txt_data_file.close()
+
+
+            #*CHART CALORIES BY CEREAL BRAND
+            #chart size
+            chart_figure = plt.figure(figsize=(30,30))
+            
+            #label font size
+            plt.rcParams.update({'font.size': 6})
+            
+            #configure x and y for chart
+            chart_x =  calories_column
+            chart_y =  brands_column
+
+            #sort list by value!
+            sorted_chartx = sorted(chart_x,key=int)
+            sorted_charty = sorted(chart_y,key=str)
+            logging.info(sorted_chartx)
+            logging.info(sorted_charty)
+
+            #?Set x-axis
+            #plt.xticks([0, 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160])
+
+            bar_width = [0.4]
+            plt.barh(sorted_charty,sorted_chartx,height=bar_width )
+
+            font1 = {'family':'serif','color':'blue','size':14}
+            font1_title = {'family':'serif','color':'blue','size':20}
+
+            plt.xlabel('calories',fontdict = font1)
+            plt.ylabel('brand',fontdict = font1)
+            plt.title('calories by brand (per serving)',fontdict = font1_title)
+
+            plt.show()
+
+
+
+
+
+
+
+
+
+
+
         def get_calories_data_thread():
-            pass
+            get_calories_data_thread = threading.Thread(target=get_calories_data)
+            get_calories_data_thread.start()
+            time.sleep(1)
 
         def get_rating_data_thread():
             pass
 
         def get_sodium_data_thread():
             pass
- 
+        
+
+        
+        
+
 
         my_tabs = ttk.Notebook(self.master)
         my_tabs.pack(pady=15)
